@@ -9,6 +9,9 @@ import { PropertiesPageComponent } from './pages/properties-page/properties-page
 import { ZoomRangePageComponent } from './pages/zoom-range-page/zoom-range-page.component';
 import { MapRoutingModule } from './map-routing.module';
 
+import * as mapboxgl from 'mapbox-gl';
+import { environment } from '../../environments/environment';
+(mapboxgl as any).config.ACCESS_TOKEN = environment.mapbox_key;
 
 
 @NgModule({

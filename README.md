@@ -11,9 +11,15 @@ npm install dotenv --save
 ```
 npm install mapbox-gl --save
 ```
+```
+npm install -D @types/mapbox-gl
+```
 
 ## Run Command
 Run `npm run env` for create environment variable
+```
+npm run env
+```
 
 ## Development server
 
