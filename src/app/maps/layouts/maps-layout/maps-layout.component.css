@@ -1,21 +1,21 @@
 
-.nav{
+.list-group{
     position: absolute;
     z-index: 9999;
     background-color: rgb(249, 244, 244);
-    width: 125px;
-    height: 177px;
+    width: 150px;
+    height: 176px;
     border-radius: 5px;
     margin-left: 15px;
 }
-.nav-item > .nav-link{
+.list-group-item > .nav-link{
     color: black;
     text-decoration: none;
     padding: 10px 15px;
     display: block;
 }
 
-.nav-item:hover{
+.list-group-item:hover{
     color: white;
     background-color: #007bff;
     text-decoration: none;

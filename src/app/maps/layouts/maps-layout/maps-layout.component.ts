@@ -9,9 +9,9 @@ import { ElementMenu } from '../../constants/element-menu';
 })
 export class MapsLayoutComponent {
   listMenu: Array<Menu> = [
-    { name: "Main", value: ElementMenu.Main },
+    { name: "Full Screen", value: ElementMenu.Main },
+    { name: "Zoom Range", value: ElementMenu.ZoomRange },
     { name: "Markers", value: ElementMenu.Markers },
     { name: "Properties", value: ElementMenu.Properties },
-    { name: "Zoom Range", value: ElementMenu.ZoomRange },
   ];
 }

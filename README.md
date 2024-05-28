@@ -16,7 +16,7 @@ npm install -D @types/mapbox-gl
 ```
 
 ## Run Command
-Run `npm run env` for create environment variable
+Run `npm run envs` for create environment variable
 ```
 npm run env
 ```
