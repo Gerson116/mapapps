@@ -1,0 +1,41 @@
+
+div{
+    width: 100vw;
+    height: 100vh;
+}
+
+.btnAddMarker{
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btnAddMarker:hover{
+    color: #bdd8f6;
+}
+
+.list-group{
+    position: absolute;
+    z-index: 999;
+    background-color: rgb(228, 227, 227);
+    bottom: 80px;
+    right: 20px;
+    border-radius: 5px;
+    margin-left: 15px;
+    box-shadow: 0px 5px 10px rgba(41, 40, 40, 0.1);
+}
+.list-group-item{
+    color: black;
+    text-decoration: none;
+    padding: 30px;
+    display: block;
+}
+
+.list-group-item:hover{
+    color: white;
+    background-color: #1c88fb;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}

@@ -11,6 +11,7 @@ import { MapRoutingModule } from './map-routing.module';
 
 import * as mapboxgl from 'mapbox-gl';
 import { environment } from '../../environments/environment';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 (mapboxgl as any).config.ACCESS_TOKEN = environment.mapbox_key;
 
 
@@ -26,7 +27,8 @@ import { environment } from '../../environments/environment';
   ],
   imports: [
     CommonModule,
-    MapRoutingModule
+    MapRoutingModule,
+    FontAwesomeModule
   ]
 })
 export class MapModule { }
