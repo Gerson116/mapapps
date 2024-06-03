@@ -4,6 +4,7 @@ import { LngLat, Map, Marker } from 'mapbox-gl';
 
 import { faPlus, faSave } from '@fortawesome/free-solid-svg-icons';
 import { MapboxEvents } from '../../constants/mapbox-event';
+import { Markers } from '../../interfaces/markers';
 
 @Component({
   selector: 'app-markers-page',
@@ -22,6 +23,13 @@ export class MarkersPageComponent implements AfterViewInit, OnDestroy{
   faPlus = faPlus;
   faSave = faSave;
   //#endregion
+
+  public color!: string;
+  listMarkers: Array<Markers> = new Array<Markers>();
+
+  markesStyle: { [key: string]: string } = {
+    "background-color": 'red'
+  };
   
   ngAfterViewInit(): void {
     if (!this.divMap?.nativeElement) {
@@ -32,6 +40,7 @@ export class MarkersPageComponent implements AfterViewInit, OnDestroy{
     this.map = new Map({
       container: this.divMap.nativeElement, // container ID
       style: 'mapbox://styles/mapbox/streets-v12', // style URL
+      attributionControl: false,
       center: this.currentLngLat, // starting position [lng, lat]
       zoom: this.zoomRange, // starting zoom
     });
@@ -48,9 +57,9 @@ export class MarkersPageComponent implements AfterViewInit, OnDestroy{
       throw 'El mapa no cargo'
     }
 
-    // this.map.on('load', () => {
-    //   this.map!.resize();
-    // })
+    this.map.on('load', () => {
+      this.map!.resize();
+    })
 
     //#region In this block I'm manage the zoom
     this.map.on('zoom', (ev)=>{
@@ -64,18 +73,12 @@ export class MarkersPageComponent implements AfterViewInit, OnDestroy{
       this.map!.zoomTo(18);
     });
     //#endregion
-
-    this.map.on(MapboxEvents.Mousemove, ()=> {
-      this.currentLngLat = this.map!.getCenter();
-    });
     
     this.map.on(MapboxEvents.Click, (ev) => {
-      const color = '#xxxxxx'.replace(/x/g, y=>(Math.random()*16|0).toString(16));
+      // const color = '#xxxxxx'.replace(/x/g, y=>(Math.random()*16|0).toString(16));
+      this.color = '#xxxxxx'.replace(/x/g, y=>(Math.random()*16|0).toString(16))
       console.log(ev.lngLat);
-      console.log(`color aleatorio ${color}`);
-      
-      this.currentLngLat = ev.lngLat;
-      this.addMarker(ev.lngLat, color);
+      this.addMarker(ev.lngLat, this.color);
     });
   }
 
@@ -101,8 +104,20 @@ export class MarkersPageComponent implements AfterViewInit, OnDestroy{
     this.marker = new Marker({
       color: color,
       draggable: true,
+      anchor: 'center',
     }).setLngLat(lngLat).addTo(this.map);
-    
+  }
+
+  flyTo(marker: Marker): void {
+    this.map?.flyTo({
+      zoom: this.zoomRange,
+      center: marker.getLngLat()
+    });
+  }
+
+  deleteElement(index: number): void{
+    this.listMarkers[index].marker.remove();
+    this.listMarkers.splice(index, 1);
   }
 
   btnAddMarker(): void{
@@ -110,11 +125,15 @@ export class MarkersPageComponent implements AfterViewInit, OnDestroy{
       console.error('El mapa no se cargo completo');
       return;
     }
-    const color = '#xxxxxx'.replace(/x/g, y=>(Math.random()*16|0).toString(16));
-    const lngLat = this.map.getCenter();
-    // this.map.on(MapboxEvents.Click, (ev) => {
-    //   console.log(ev);
-    //   // this.addMarker(this.currentLngLat, color);
-    // });
+    if (!this.marker) {
+      return;
+    }
+
+    let tempMarkers: Markers = {
+      marker: this.marker,
+      color: this.color
+    };
+    
+    this.listMarkers.push(tempMarkers);
   }
 }

@@ -1,24 +1,17 @@
 <div #map></div>
 
 <ul class="list-group">
-    <li class="list-group-item">
-        prueba 1
-    </li>
-    <li class="list-group-item">
-        prueba 1
-    </li>
-    <li class="list-group-item">
-        prueba 1
-    </li>
-    <li class="list-group-item">
-        prueba 1
-    </li>
-    <li class="list-group-item">
-        prueba 1
-    </li>
-    <li class="list-group-item">
-        prueba 1
-    </li>
+    @if (listMarkers.length > 0) 
+    {
+        @for (item of listMarkers; track item; let index = $index) {            
+            <li class="list-group-item" 
+                [ngStyle]="{ 'background-color': item.color}" 
+                (dblclick)="deleteElement(index)"
+                (click)="flyTo(item.marker)">
+                Marcador {{index + 1}}
+            </li>
+        }
+    }
 </ul>
 
 
