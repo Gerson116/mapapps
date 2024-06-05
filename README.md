@@ -14,6 +14,9 @@ npm install mapbox-gl --save
 ```
 npm install -D @types/mapbox-gl
 ```
+```
+npm install flatted --legacy-peer-deps
+```
 
 ## Run Command
 Run `npm run envs` for create environment variable

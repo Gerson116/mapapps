@@ -1,6 +1,7 @@
-import { Marker } from "mapbox-gl";
+import { LngLat, Marker } from "mapbox-gl";
 
 export interface Markers{
     marker: Marker,
-    color: string
+    color: string,
+    lngLat: LngLat
 }

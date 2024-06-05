@@ -7,7 +7,7 @@
             <li class="list-group-item" 
                 [ngStyle]="{ 'background-color': item.color}" 
                 (dblclick)="deleteElement(index)"
-                (click)="flyTo(item.marker)">
+                (click)="flyTo(item.lngLat)">
                 Marcador {{index + 1}}
             </li>
         }
