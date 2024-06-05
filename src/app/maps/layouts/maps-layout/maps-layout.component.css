@@ -1,24 +1,23 @@
-
-.list-group{
-    position: absolute;
-    z-index: 999;
-    background-color: rgb(228, 227, 227);
-    width: 150px;
-    height: 176px;
-    border-radius: 5px;
-    margin-left: 15px;
+.list-group {
+  position: absolute;
+  z-index: 999;
+  background-color: rgb(228, 227, 227);
+  width: 125px;
+  height: 176px;
+  border-radius: 5px;
+  margin-left: 5px;
 }
-.list-group-item{
-    color: black;
-    text-decoration: none;
-    padding: 10px 15px;
-    display: block;
+.list-group-item {
+  color: black;
+  text-decoration: none;
+  padding: 10px 15px;
+  display: block;
 }
 
-.list-group-item:hover{
-    color: white;
-    background-color: #1c88fb;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s, color 0.3s;
+.list-group-item:hover {
+  color: white;
+  background-color: #1c88fb;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s, color 0.3s;
 }
