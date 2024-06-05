@@ -1,18 +1,25 @@
-import { AfterViewInit, Component, ElementRef, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 
 import { LngLat, Map, Marker } from 'mapbox-gl';
 
 import { faPlus, faSave } from '@fortawesome/free-solid-svg-icons';
 import { MapboxEvents } from '../../constants/mapbox-event';
 import { Markers } from '../../interfaces/markers';
+import { MarkerSave } from '../../interfaces/marker-save';
 
 @Component({
   selector: 'app-markers-page',
   templateUrl: './markers-page.component.html',
-  styleUrl: './markers-page.component.css'
+  styleUrl: './markers-page.component.css',
 })
-export class MarkersPageComponent implements AfterViewInit, OnDestroy{
-  
+export class MarkersPageComponent implements AfterViewInit, OnDestroy, OnInit {
   @ViewChild('map') divMap?: ElementRef;
   map?: Map;
   marker?: Marker;
@@ -26,11 +33,13 @@ export class MarkersPageComponent implements AfterViewInit, OnDestroy{
 
   public color!: string;
   listMarkers: Array<Markers> = new Array<Markers>();
+  listMarkersSave: Array<MarkerSave> = new Array<MarkerSave>();
 
-  markesStyle: { [key: string]: string } = {
-    "background-color": 'red'
-  };
-  
+  //...
+
+  ngOnInit(): void {
+  }
+
   ngAfterViewInit(): void {
     if (!this.divMap?.nativeElement) {
       console.error('El contenedor no fue inicializado exitosamente.');
@@ -44,8 +53,9 @@ export class MarkersPageComponent implements AfterViewInit, OnDestroy{
       center: this.currentLngLat, // starting position [lng, lat]
       zoom: this.zoomRange, // starting zoom
     });
-    
+
     this.mapListeners();
+    this.readToMarker();
   }
 
   ngOnDestroy(): void {
@@ -53,49 +63,49 @@ export class MarkersPageComponent implements AfterViewInit, OnDestroy{
   }
 
   mapListeners(): void {
-    if(!this.map){
-      throw 'El mapa no cargo'
+    if (!this.map) {
+      throw 'El mapa no cargo';
     }
 
     this.map.on('load', () => {
       this.map!.resize();
-    })
+    });
 
     //#region In this block I'm manage the zoom
-    this.map.on('zoom', (ev)=>{
+    this.map.on('zoom', (ev) => {
       this.zoomRange = this.map!.getZoom();
     });
-    
-    this.map.on('zoomend', ()=>{
-      if(this.map!.getZoom() < 19){
+
+    this.map.on('zoomend', () => {
+      if (this.map!.getZoom() < 19) {
         return;
       }
       this.map!.zoomTo(18);
     });
     //#endregion
-    
+
     this.map.on(MapboxEvents.Click, (ev) => {
       // const color = '#xxxxxx'.replace(/x/g, y=>(Math.random()*16|0).toString(16));
-      this.color = '#xxxxxx'.replace(/x/g, y=>(Math.random()*16|0).toString(16))
-      console.log(ev.lngLat);
+      this.color = '#xxxxxx'.replace(/x/g, (y) =>
+        ((Math.random() * 16) | 0).toString(16)
+      );
       this.addMarker(ev.lngLat, this.color);
     });
   }
 
-  zoomIn(){
+  zoomIn() {
     if (this.zoomRange < 19) {
       this.map?.zoomIn();
     }
-    
   }
 
-  zoomOut(){
+  zoomOut() {
     if (this.zoomRange > -2 && this.zoomRange < 19) {
       this.map?.zoomOut();
     }
   }
 
-  addMarker(lngLat: LngLat, color: string): void{
+  addMarker(lngLat: LngLat, color: string): void {
     if (!this.map) {
       console.error('El mapa no se cargo completo');
       return;
@@ -105,35 +115,85 @@ export class MarkersPageComponent implements AfterViewInit, OnDestroy{
       color: color,
       draggable: true,
       anchor: 'center',
-    }).setLngLat(lngLat).addTo(this.map);
+    })
+      .setLngLat(lngLat)
+      .addTo(this.map);
   }
 
-  flyTo(marker: Marker): void {
+  flyTo(lngLat: LngLat): void {
     this.map?.flyTo({
       zoom: this.zoomRange,
-      center: marker.getLngLat()
+      center: lngLat,
     });
   }
 
-  deleteElement(index: number): void{
+  deleteElement(index: number): void {
     this.listMarkers[index].marker.remove();
     this.listMarkers.splice(index, 1);
   }
 
-  btnAddMarker(): void{
+  btnAddMarker(): void {
     if (!this.map) {
       console.error('El mapa no se cargo completo');
       return;
     }
+
     if (!this.marker) {
       return;
     }
 
     let tempMarkers: Markers = {
       marker: this.marker,
-      color: this.color
+      color: this.color,
+      lngLat: this.marker.getLngLat(),
     };
-    
+
     this.listMarkers.push(tempMarkers);
+
+    let tempMarkerSave: MarkerSave = {
+      color: this.color,
+      lngLat: this.marker.getLngLat(),
+    };
+
+    this.saveToMarker(tempMarkerSave);
+  }
+
+  saveToMarker(markerSave: MarkerSave): void {
+    if (typeof markerSave === 'object') {
+      this.listMarkersSave.push(markerSave);
+    }
+
+    let markers = JSON.stringify(this.listMarkersSave);
+    localStorage.setItem('listMarkersSave', markers);
+  }
+
+  loadMarker(markersSaved: Array<MarkerSave>, map: Map): void{
+    markersSaved.forEach(element => {
+      this.marker = new Marker({
+        color: element.color,
+        draggable: true,
+        anchor: 'center',
+      }).setLngLat(element.lngLat).addTo(map);
+
+      let tempMarkers: Markers = {
+        marker: this.marker,
+        color: element.color,
+        lngLat: this.marker.getLngLat(),
+      };
+
+      this.listMarkers.push(tempMarkers);
+    });
+  }
+
+  readToMarker(): void {
+    let tempData = localStorage.getItem('listMarkersSave');
+    if (tempData != null) {
+      if (!this.map) {
+        console.error('El mapa no cargo');
+        return;
+      }
+      let markersSaved: Array<MarkerSave> = JSON.parse(JSON.parse(JSON.stringify(tempData)));
+      this.loadMarker(markersSaved, this.map);
+    }
   }
 }
