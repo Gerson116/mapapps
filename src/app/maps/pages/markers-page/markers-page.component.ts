@@ -139,6 +139,7 @@ export class MarkersPageComponent implements AfterViewInit, OnDestroy, OnInit {
     }
 
     if (!this.marker) {
+      console.error('El marcador es nulo');
       return;
     }
 
@@ -169,6 +170,7 @@ export class MarkersPageComponent implements AfterViewInit, OnDestroy, OnInit {
 
   loadMarker(markersSaved: Array<MarkerSave>, map: Map): void{
     markersSaved.forEach(element => {
+
       this.marker = new Marker({
         color: element.color,
         draggable: true,
@@ -181,7 +183,13 @@ export class MarkersPageComponent implements AfterViewInit, OnDestroy, OnInit {
         lngLat: this.marker.getLngLat(),
       };
 
+      let tempMarkerSave: MarkerSave = {
+        color: element.color,
+        lngLat: this.marker.getLngLat(),
+      };
+
       this.listMarkers.push(tempMarkers);
+      this.listMarkersSave.push(tempMarkerSave);
     });
   }
 
