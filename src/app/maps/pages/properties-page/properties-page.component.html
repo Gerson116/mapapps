@@ -1,1 +1,23 @@
-<p>properties-page works!</p>
+<div class="container">
+  <div class="row">
+    <div class="col col-md-12">
+      <h3 class="text-center">Listado de casas</h3>
+    </div>
+  </div>
+  <div class="row">
+    @for (item of houses; track $index) {
+    <div class="col-md-3">
+      <div class="card">
+        <!-- <app-mini-map></app-mini-map> -->
+        <div class="card-body">
+          <h5 class="card-title">{{ item.title }}</h5>
+          <p class="card-text">
+            {{ item.description }}
+          </p>
+          <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { LngLat, Marker } from "mapbox-gl";
+import { LngLat } from 'mapbox-gl';
 
 export interface MarkerSave{
     color: string,
