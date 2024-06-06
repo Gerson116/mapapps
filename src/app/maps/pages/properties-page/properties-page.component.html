@@ -8,7 +8,9 @@
     @for (item of houses; track $index) {
     <div class="col-md-3">
       <div class="card">
-        <!-- <app-mini-map></app-mini-map> -->
+        <app-mini-map
+          [currentLngLat]="item.lngLat">
+        </app-mini-map>
         <div class="card-body">
           <h5 class="card-title">{{ item.title }}</h5>
           <p class="card-text">

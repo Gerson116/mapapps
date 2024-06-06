@@ -5,8 +5,7 @@ import {
   ElementRef,
   ViewChild,
 } from '@angular/core';
-import { LngLat, LngLatLike, Map, Marker } from 'mapbox-gl';
-import { MapboxEvents } from '../../constants/mapbox-event';
+import { LngLat, Map, Marker } from 'mapbox-gl';
 import { MarkerSave } from '../../interfaces/marker-save';
 
 @Component({
@@ -15,13 +14,15 @@ import { MarkerSave } from '../../interfaces/marker-save';
   styleUrl: './mini-map.component.css',
 })
 export class MiniMapComponent implements AfterViewInit {
-  @Input() markerSave?: MarkerSave;
-  @Input() marker?: Marker;
+  @Input() currentLngLat!: LngLat;
+  // @Input() marker?: Marker;
 
   @ViewChild('miniMap') divMiniMap?: ElementRef;
   map?: Map;
   zoomRange: number = 15;
-  currentLngLat!: LngLatLike;
+  color!: string;
+  marker!: Marker;
+  // currentLngLat: LngLat = new LngLat(-69.81855278168246, 18.50751112324967);
 
   // constructor() {}
 
@@ -50,8 +51,12 @@ export class MiniMapComponent implements AfterViewInit {
     this.map.on('load', () => {
       this.map!.resize();
     });
+    
+    this.color = '#xxxxxx'.replace(/x/g, (y) =>
+      ((Math.random() * 16) | 0).toString(16)
+    );
 
-    this.addMarker(this.markerSave!.lngLat, this.markerSave!.color);
+    this.addMarker(this.currentLngLat, this.color);
   }
 
   addMarker(lngLat: LngLat, color: string): void {
@@ -64,8 +69,6 @@ export class MiniMapComponent implements AfterViewInit {
       color: color,
       draggable: true,
       anchor: 'center',
-    })
-      .setLngLat(lngLat)
-      .addTo(this.map);
+    }).setLngLat(lngLat).addTo(this.map);
   }
 }

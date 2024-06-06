@@ -85,7 +85,6 @@ export class MarkersPageComponent implements AfterViewInit, OnDestroy, OnInit {
     //#endregion
 
     this.map.on(MapboxEvents.Click, (ev) => {
-      // const color = '#xxxxxx'.replace(/x/g, y=>(Math.random()*16|0).toString(16));
       this.color = '#xxxxxx'.replace(/x/g, (y) =>
         ((Math.random() * 16) | 0).toString(16)
       );
