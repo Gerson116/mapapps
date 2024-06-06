@@ -85,7 +85,6 @@ export class MarkersPageComponent implements AfterViewInit, OnDestroy, OnInit {
     //#endregion
 
     this.map.on(MapboxEvents.Click, (ev) => {
-      // const color = '#xxxxxx'.replace(/x/g, y=>(Math.random()*16|0).toString(16));
       this.color = '#xxxxxx'.replace(/x/g, (y) =>
         ((Math.random() * 16) | 0).toString(16)
       );
@@ -139,6 +138,7 @@ export class MarkersPageComponent implements AfterViewInit, OnDestroy, OnInit {
     }
 
     if (!this.marker) {
+      console.error('El marcador es nulo');
       return;
     }
 
@@ -169,6 +169,7 @@ export class MarkersPageComponent implements AfterViewInit, OnDestroy, OnInit {
 
   loadMarker(markersSaved: Array<MarkerSave>, map: Map): void{
     markersSaved.forEach(element => {
+
       this.marker = new Marker({
         color: element.color,
         draggable: true,
@@ -181,7 +182,13 @@ export class MarkersPageComponent implements AfterViewInit, OnDestroy, OnInit {
         lngLat: this.marker.getLngLat(),
       };
 
+      let tempMarkerSave: MarkerSave = {
+        color: element.color,
+        lngLat: this.marker.getLngLat(),
+      };
+
       this.listMarkers.push(tempMarkers);
+      this.listMarkersSave.push(tempMarkerSave);
     });
   }
 

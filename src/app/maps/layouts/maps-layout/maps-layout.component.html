@@ -1,11 +1,14 @@
-<ul class="list-group mt-5">
-    @for (item of listMenu; track $index) {
-        <li class="list-group-item"[routerLink]="[item.value]" 
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{exact: true}">
-        {{item.name}}
-        </li>
-    }
+<ul class="list-group mt-2">
+  @for (item of listMenu; track $index) {
+  <li
+    class="list-group-item"
+    [routerLink]="[item.value]"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+  >
+    {{ item.name }}
+  </li>
+  }
 </ul>
 
 <router-outlet />
